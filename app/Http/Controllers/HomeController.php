@@ -46,36 +46,78 @@ class HomeController extends Controller
     // Menampilkan daftar galeri
     public function galeri()
     {
-        $galeries = Foto::with(['galery.post' => function ($query) {            
-            $query->where('status', 'published');
-        }])
-        ->get()
-        ->groupBy('galery.post.judul');  // Mengambil semua galeri
+        // Debug: Check for posts with Galeri Sekolah category
+        $posts = Post::with(['kategori', 'galeries.fotos'])
+            ->whereHas('kategori', function($query) {
+                $query->where('judul', 'Galery Sekolah');
+            })
+            ->where('status', 'published')
+            ->get();
+
+        \Log::info('Debug Galeri:');
+        \Log::info('1. Total posts found: ' . $posts->count());
+        
+        // Group the photos by post title
+        $galeries = collect();
+        foreach ($posts as $post) {
+            \Log::info("2. Checking post: {$post->judul}");
+            \Log::info("3. Galleries count: " . $post->galeries->count());
+            
+            if ($post->galeries->isNotEmpty()) {
+                $photos = collect();
+                foreach ($post->galeries as $gallery) {
+                    \Log::info("4. Gallery ID: {$gallery->id}, Status: {$gallery->status}");
+                    \Log::info("5. Photos in gallery: " . $gallery->fotos->count());
+                    
+                    if ($gallery->status == 1) {
+                        $photos = $photos->concat($gallery->fotos);
+                    }
+                }
+                if ($photos->isNotEmpty()) {
+                    $galeries->put($post->judul, $photos);
+                }
+            }
+        }
+
+        \Log::info('6. Final galleries count: ' . $galeries->count());
+        
         return view('galeri', compact('galeries'));
     }
 
     // Menampilkan foto lebih banyak
     public function showGallery($galleryTitle)
     {
-        // Ambil foto terkait berdasarkan judul galeri
-        $photos = Foto::whereHas('galery.post', function ($query) use ($galleryTitle) {
-            $query->where('judul', $galleryTitle);
-        })->get();
-    
+        // Replace '+' with space and decode
+        $decodedTitle = str_replace('+', ' ', urldecode($galleryTitle));
+        
+        // Debug
+        \Log::info('Gallery Title: ' . $decodedTitle);
+        
+        $photos = Foto::whereHas('galery.post', function ($query) use ($decodedTitle) {
+            $query->where('judul', $decodedTitle)
+                  ->where('status', 'published');
+        })
+        ->whereHas('galery', function($query) {
+            $query->where('status', 1);
+        })
+        ->get();
+        
+        // Debug
+        \Log::info('Photos count: ' . $photos->count());
+        
         return view('galeri.detail', compact('galleryTitle', 'photos'));
     }
 
     // Menampilkan daftar posts (khusus untuk agenda yang published)
     public function agenda()
     {
-        // Mendapatkan post dengan kategori 'agenda' dan status 'published'
-        $agendaPosts = Post::with('kategori')
+        $agendaPosts = Post::with(['kategori', 'galeries.fotos'])
             ->whereHas('kategori', function($query) {
-                $query->where('judul', 'Agenda Sekolah'); // Sesuaikan dengan kolom 'judul' di tabel kategori
+                $query->where('judul', 'Agenda Sekolah');
             })
             ->where('status', 'published')
             ->get();
-    
+
         return view('agenda', compact('agendaPosts'));
     }
     
@@ -89,15 +131,13 @@ class HomeController extends Controller
     // Menampilkan daftar posts (khusus untuk kategori Informasi yang published)
     public function informasi()
     {
-        // Mendapatkan post dengan kategori 'Informasi Terkini' dan status 'published'
-        $informasiPosts = Post::with('kategori')
+        $informasiPosts = Post::with(['kategori', 'galeries.fotos'])
             ->whereHas('kategori', function($query) {
-                $query->where('judul', 'Informasi Terkini');  // Sesuaikan dengan nama kategori
+                $query->where('judul', 'Informasi Terkini');
             })
-            ->where('status', 'published')  // Hanya mengambil post dengan status published
+            ->where('status', 'published')
             ->get();
-    
-        // Mengirim variabel informasiPosts ke view
+
         return view('informasi', compact('informasiPosts'));
     }   
     

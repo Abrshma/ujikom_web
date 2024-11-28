@@ -149,6 +149,12 @@
                 @foreach ($agendaPosts as $post)
                     <div class="col-md-4">
                         <div class="card mb-3 slide-in-up">
+                            @if($post->galeries->isNotEmpty() && $post->galeries->first()->fotos->isNotEmpty())
+                                <img src="{{ asset('storage/' . $post->galeries->first()->fotos->first()->file) }}" 
+                                     class="card-img-top" 
+                                     alt="{{ $post->judul }}"
+                                     style="height: 200px; object-fit: cover;">
+                            @endif
                             <div class="card-body">
                                 <h5 class="card-title">{{ $post->judul }}</h5>
                                 <p class="card-text">{{ Str::limit($post->isi, 100) }}</p>
@@ -162,112 +168,83 @@
         @endif
     </div>
 
-<!-- Footer Section -->
-<footer class="bg-dark text-white py-5 mt-5">
-    <div class="container">
-        <div class="row">
-            <!-- About Section -->
-            <div class="col-md-3 mb-4 mb-md-0">
-                <h5 class="font-weight-bold mb-3 text-uppercase text-info">SMK Negeri 4 Bogor</h5>
-                <p>
-                    SMK Negeri 4 Bogor adalah institusi pendidikan yang berfokus pada pengembangan keterampilan teknis dan profesional siswa untuk menghadapi dunia kerja.
-                </p>
-                <div class="d-flex gap-3 flex-wrap">
-                    <a href="https://www.facebook.com/people/SMK-NEGERI-4-KOTA-BOGOR/100054636630766/" target="_blank" class="btn btn-outline-light btn-floating rounded-circle">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="https://api.whatsapp.com/send/?phone=6282260168886" target="_blank" class="btn btn-outline-light btn-floating rounded-circle">
-                        <i class="fab fa-whatsapp"></i>
-                    </a>
-                    <a href="https://www.instagram.com/smkn4kotabogor/" target="_blank" class="btn btn-outline-light btn-floating rounded-circle">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://www.youtube.com/channel/UC4M-6Oc1ZvECz00MlMa4v_A/videos?app=desktop" target="_blank" class="btn btn-outline-light btn-floating rounded-circle">
-                        <i class="fab fa-youtube"></i>
-                    </a>
-                    <a href="mailto:smkn4@smkn4bogor.sch.id" target="_blank" class="btn btn-outline-light btn-floating rounded-circle">
-                        <i class="fas fa-envelope"></i>
-                    </a>
+    <!-- Footer Section -->
+    <footer class="bg-dark text-white py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <!-- About Section -->
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="font-weight-bold mb-3 text-uppercase text-info">SMK Negeri 4 Bogor</h5>
+                    <p>SMK Negeri 4 Bogor adalah institusi pendidikan yang berfokus pada pengembangan keterampilan teknis dan profesional siswa untuk menghadapi dunia kerja.</p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="https://www.facebook.com/people/SMK-NEGERI-4-KOTA-BOGOR/100054636630766/" target="_blank" class="btn btn-outline-light btn-floating rounded-circle">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://api.whatsapp.com/send/?phone=6282260168886" target="_blank" class="btn btn-outline-light btn-floating rounded-circle">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="https://www.instagram.com/smkn4kotabogor/" target="_blank" class="btn btn-outline-light btn-floating rounded-circle">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.youtube.com/channel/UC4M-6Oc1ZvECz00MlMa4v_A/videos?app=desktop" target="_blank" class="btn btn-outline-light btn-floating rounded-circle">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="mailto:smkn4@smkn4bogor.sch.id" target="_blank" class="btn btn-outline-light btn-floating rounded-circle">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Kompetensi Keahlian Section -->
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="font-weight-bold mb-3 text-uppercase text-info">Kompetensi Keahlian</h5>
+                    <ul class="list-unstyled kompetensi-list">
+                        <li class="mb-2">
+                            <a href="{{ url('/kompetensi/pplg') }}" class="text-white text-decoration-none">Pengembangan Perangkat Lunak</a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{{ url('/kompetensi/tjkt') }}" class="text-white text-decoration-none">Teknik Jaringan Komputer dan Telekomunikasi</a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{{ url('/kompetensi/tkr') }}" class="text-white text-decoration-none">Teknik Kendaraan Ringan</a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{{ url('/kompetensi/tflm') }}" class="text-white text-decoration-none">Teknik Fabrikasi Logam dan Manufaktur</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Quick Links Section -->
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="font-weight-bold mb-3 text-uppercase text-info">Menu</h5>
+                    <ul class="list-unstyled navbar-list">
+                        <li class="mb-2"><a href="{{ url('/') }}" class="text-white text-decoration-none">Beranda</a></li>
+                        <li class="mb-2"><a href="{{ url('/profile') }}" class="text-white text-decoration-none">Profil Sekolah</a></li>
+                        <li class="mb-2"><a href="{{ url('/agenda') }}" class="text-white text-decoration-none">Agenda Sekolah</a></li>
+                        <li class="mb-2"><a href="{{ url('/informasi') }}" class="text-white text-decoration-none">Informasi Terkini</a></li>
+                        <li class="mb-2"><a href="{{ url('/galeri') }}" class="text-white text-decoration-none">Galeri Sekolah</a></li>
+                    </ul>
+                </div>
+
+                <!-- Lokasi Section -->
+                <div class="col-md-3">
+                    <h5 class="font-weight-bold mb-3 text-uppercase text-info">Lokasi</h5>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3978.8072871543317!2d106.822119!3d-6.6407334!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c8b16ee07ef5%3A0x14ab253dd267de49!2sSMK%20Negeri%204%20Bogor%20(Nebrazka)!5e0!3m2!1sid!2sid!4v1699850000000!5m2!1sid!2sid" 
+                        width="100%" height="200" style="border:0;" 
+                        allowfullscreen="" loading="lazy" class="rounded mb-3">
+                    </iframe>
+                    <p class="small">Jl. Raya Tajur, Kp. Buntar RT.02/RW.08, Kel. Muara sari, Kec. Bogor Selatan, RT.03/RW.08, Muarasari, Kec. Bogor Sel., Kota Bogor, Jawa Barat 16137</p>
                 </div>
             </div>
 
-            <!-- Kompetensi Keahlian Section -->
-            <div class="col-md-3 mb-4 mb-md-0">
-                <h5 class="font-weight-bold mb-3 text-uppercase text-info">Kompetensi Keahlian</h5>
-                <ul class="list-unstyled kompetensi-list">
-                    <li class="mb-2">
-                        <a href="{{ url('/kompetensi/pplg') }}" class="text-white text-decoration-none">
-                            Pengembangan Perangkat Lunak
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="{{ url('/kompetensi/tjkt') }}" class="text-white text-decoration-none">
-                            Teknik Jaringan Komputer dan Telekomunikasi
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="{{ url('/kompetensi/tkr') }}" class="text-white text-decoration-none">
-                            Teknik Kendaraan Ringan
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="{{ url('/kompetensi/tflm') }}" class="text-white text-decoration-none">
-                            Teknik Fabrikasi Logam dan Manufaktur
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <hr class="my-4" style="border-top: 1px solid rgba(255, 255, 255, 0.1);">
 
-            <!-- Navbar Quick Links Section -->
-            <div class="col-md-3 mb-4 mb-md-0">
-                <h5 class="font-weight-bold mb-3 text-uppercase text-info">Navbar</h5>
-                <ul class="list-unstyled navbar-list">
-                    <li class="mb-2">
-                        <a href="{{ url('/') }}" class="text-white text-decoration-none">
-                            Beranda
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="{{ url('/profile') }}" class="text-white text-decoration-none">
-                            Profil Sekolah
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="{{ url('/agenda') }}" class="text-white text-decoration-none">
-                            Agenda Sekolah
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="{{ url('/informasi') }}" class="text-white text-decoration-none">
-                            Informasi Terkini
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/galeri') }}" class="text-white text-decoration-none">
-                            Galeri Sekolah
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Lokasi Section -->
-            <div class="col-md-3 mb-4 mb-md-0">
-                <h5 class="font-weight-bold mb-3 text-uppercase text-info">Lokasi</h5>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3978.8072871543317!2d106.822119!3d-6.6407334!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c8b16ee07ef5%3A0x14ab253dd267de49!2sSMK%20Negeri%204%20Bogor%20(Nebrazka)!5e0!3m2!1sid!2sid!4v1699850000000!5m2!1sid!2sid" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" class="rounded"></iframe>
-                <p class="mt-3">
-                    Jl. Raya Tajur, Kp. Buntar RT.02/RW.08, Kel. Muara sari, Kec. Bogor Selatan, RT.03/RW.08, Muarasari, Kec. Bogor Sel., Kota Bogor, Jawa Barat 16137
-                </p>
+            <!-- Copyright Section -->
+            <div class="text-center">
+                <p class="mb-0 text-secondary">&copy; Muhammad Abrisham Abdullah. All Rights Reserved.</p>
             </div>
         </div>
-
-        <hr class="my-4" style="border-top: 1px solid #fff;">
-
-        <!-- Copyright Section -->
-        <div class="text-center">
-            <p class="mb-0 text-secondary">&copy; 2024 SMK Negeri 4 Bogor. All Rights Reserved.</p>
-        </div>
-    </div>
-</footer>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>

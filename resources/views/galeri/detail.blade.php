@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $galleryTitle }} - Galeri SMKN 4 Bogor</title>
+    <title>{{ str_replace('+', ' ', $galleryTitle) }} - Galeri SMKN 4 Bogor</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Font Awesome -->
     <style>
@@ -110,7 +110,7 @@
 <body>
     <div class="container mt-5 slide-in-up">
         <button onclick="history.back()" class="btn btn-primary mb-4">Kembali</button>
-        <h1>{{ $galleryTitle }}</h1>
+        <h1>{{ str_replace('+', ' ', $galleryTitle) }}</h1>
 
         @if($photos->isEmpty())
             <p>Tidak ada foto di galeri ini.</p>

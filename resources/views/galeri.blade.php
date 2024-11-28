@@ -316,7 +316,7 @@
 
         <!-- Copyright Section -->
         <div class="text-center">
-            <p class="mb-0 text-secondary">&copy; 2024 SMK Negeri 4 Bogor. All Rights Reserved.</p>
+            <p class="mb-0 text-secondary">&copy; Muhammad Abrisham Abdullah. All Rights Reserved.</p>
         </div>
     </div>
 </footer>

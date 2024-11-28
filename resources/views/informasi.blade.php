@@ -150,6 +150,12 @@
                 @foreach ($informasiPosts as $post)
                     <div class="col-md-4">
                         <div class="card mb-3 slide-in-up">
+                            @if($post->galeries->isNotEmpty() && $post->galeries->first()->fotos->isNotEmpty())
+                                <img src="{{ asset('storage/' . $post->galeries->first()->fotos->first()->file) }}" 
+                                     class="card-img-top" 
+                                     alt="{{ $post->judul }}"
+                                     style="height: 200px; object-fit: cover;">
+                            @endif
                             <div class="card-body">
                                 <h5 class="card-title">{{ $post->judul }}</h5>
                                 <p class="card-text">{{ Str::limit($post->isi, 100) }}</p>
@@ -265,7 +271,7 @@
 
         <!-- Copyright Section -->
         <div class="text-center">
-            <p class="mb-0 text-secondary">&copy; 2024 SMK Negeri 4 Bogor. All Rights Reserved.</p>
+            <p class="mb-0 text-secondary">&copy; Muhammad Abrisham Abdullah. All Rights Reserved.</p>
         </div>
     </div>
 </footer>
